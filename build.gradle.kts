@@ -24,7 +24,7 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("org.flywaydb:flyway-core:9.20.0")
-    implementation("org.flywaydb:flyway-mysql:9.20.0")
+    implementation("org.flywaydb:flyway-core:9.22.2")
+    implementation("org.flywaydb:flyway-mysql:9.22.2")
     implementation("mysql:mysql-connector-java:8.0.33")
 }
