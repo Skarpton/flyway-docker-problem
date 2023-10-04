@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: always
+    command: --default-authentication-plugin=caching_sha2_password
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    expose:
+      - ${MYSQL_PORT}
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 5s
+      timeout: 5s
+      retries: 55
+  api:
+    image:  example:test
+    container_name: example
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
