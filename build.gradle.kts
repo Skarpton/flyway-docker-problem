@@ -1,10 +1,13 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.10"
-    id("io.ktor.plugin") version "2.3.4"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    application
 }
 
 group = "com.example"
@@ -22,9 +25,16 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-core-jvm:2.3.4")
+    implementation("io.ktor:ktor-server-netty-jvm:2.3.4")
     implementation("org.flywaydb:flyway-core:9.22.2")
-    implementation("org.flywaydb:flyway-mysql:9.22.2")
+    implementation("org.flywaydb:flyway-mysql:9.20.0")
     implementation("mysql:mysql-connector-java:8.0.33")
 }
+tasks {
+    named<ShadowJar>("shadowJar") {
+        mergeServiceFiles()
+        archiveBaseName.set("${project.name}-all")
+    }
+}
+
